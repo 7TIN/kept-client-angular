@@ -1,0 +1,53 @@
+<div class="w-full max-w-sm">
+  <div class="bg-card text-card-foreground rounded-xl border shadow-sm">
+    <div class="flex flex-col p-6 space-y-1">
+      <h3 class="font-semibold tracking-tight text-2xl">Create an account</h3>
+      <p class="text-sm text-muted-foreground">
+        Enter your details below to sign up.
+      </p>
+    </div>
+    <div class="p-6 pt-0">
+      <form [formGroup]="signupForm" (ngSubmit)="handleSubmit()">
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label for="name" class="text-sm font-medium">Name</label>
+              <input id="name" formControlName="name" placeholder="John Doe" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm" />
+            </div>
+            <div class="space-y-2">
+              <label for="username" class="text-sm font-medium">Username</label>
+              <input id="username" formControlName="username" placeholder="johndoe" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm" />
+            </div>
+          </div>
+          <div class="space-y-2">
+            <label for="email" class="text-sm font-medium">Email</label>
+            <input id="email" type="email" formControlName="email" placeholder="john@example.com" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm" />
+          </div>
+          <div class="space-y-2">
+            <label for="password" class="text-sm font-medium">Password</label>
+            <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm" />
+          </div>
+          
+          <div class="space-y-2">
+            <label for="confirmPassword" class="text-sm font-medium">Confirm Password</label>
+            <input id="confirmPassword" type="password" formControlName="confirmPassword" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm" />
+          </div>
+          
+          <p *ngIf="errorMsg" class="text-sm text-red-600">{{ errorMsg }}</p>
+          <p *ngIf="successMsg" class="text-sm text-green-600">{{ successMsg }}</p>
+
+          <button type="submit" class="bg-primary text-primary-foreground h-9 px-4 py-2 rounded-md w-full">
+            Sign Up
+          </button>
+          
+          <div class="mt-2 text-sm text-muted-foreground text-center">
+            Already have an account?
+            <a routerLink="/login" class="font-medium underline">
+              Log in
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
