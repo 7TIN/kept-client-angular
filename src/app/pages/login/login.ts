@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import axios from 'axios'; // We'll replace this with a service later
+import axios from 'axios';
 
 @Component({
   selector: 'app-login',

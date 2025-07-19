@@ -1,0 +1,53 @@
+<h2 mat-dialog-title>Share Your Interview Experience</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="experienceForm" class="space-y-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <mat-form-field appearance="outline">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" placeholder="e.g. My Amazon SDE-1 Interview">
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Company</mat-label>
+        <input matInput formControlName="companyName" placeholder="Search or create company...">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Summary</mat-label>
+        <textarea matInput formControlName="summary" placeholder="Write a short summary..."></textarea>
+    </mat-form-field>
+
+    <div class="space-y-4">
+      <h3 class="text-lg font-semibold">Questions</h3>
+      <div formArrayName="questions">
+        <div *ngFor="let question of questions.controls; let i=index" [formGroupName]="i" class="grid grid-cols-[1fr_auto_auto] items-center gap-2">
+          <mat-form-field appearance="outline">
+            <mat-label>Question {{ i + 1 }}</mat-label>
+            <input title="input" matInput formControlName="questionText">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="questionType">
+              <mat-option value="TECHNICAL">Technical</mat-option>
+              <mat-option value="HR">HR</mat-option>
+              <mat-option value="MR">MR</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button mat-icon-button (click)="removeQuestion(i)" color="warn" type="button">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <button mat-stroked-button type="button" (click)="addQuestion()">+ Add Question</button>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="experienceForm.invalid">Submit</button>
+</mat-dialog-actions>

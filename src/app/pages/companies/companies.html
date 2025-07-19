@@ -1,0 +1,27 @@
+<div class="max-w-5xl mx-auto px-4 py-8">
+  <div class="space-y-6">
+    <div class="flex justify-between items-center">
+      <h1 class="text-xl font-semibold">Companies</h1>
+
+      <select
+        title="companies-sort"
+        [(ngModel)]="sortBy"
+        class="border rounded-md px-2 py-1 text-sm bg-card"
+      >
+        <option value="alphabetical">A → Z</option>
+        <option value="experienceCount">Most Experiences</option>
+      </select>
+    </div>
+
+    <p *ngIf="isLoading" class="text-center">Loading companies...</p>
+
+    <div *ngIf="!isLoading" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <app-company-card
+        *ngFor="let company of sortedCompanies"
+        [name]="company.name"
+        [experienceCount]="company.experienceCount"
+        (click)="navigateToCompanyExperiences(company.name)"
+      ></app-company-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="max-w-5xl mx-auto px-4 py-8 space-y-6">
+  <div class="flex justify-between items-center">
+    <h1 class="text-xl font-semibold">Interview Experiences</h1>
+    <button (click)="openShareDialog()" class="bg-primary text-primary-foreground h-9 px-4 py-2 rounded-md">
+      Add Experience
+    </button>
+  </div>
+
+  <section class="space-y-6">
+    <div *ngIf="isLoading" class="text-center">Loading experiences...</div>
+
+    <div *ngIf="!isLoading && experiences.length === 0" class="text-center">
+      No experiences found.
+    </div>
+
+    <div *ngFor="let exp of experiences">
+      <app-experience-card [experience]="exp"></app-experience-card>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,26 @@
+
+<div (click)="openDetails()" class="bg-card text-card-foreground rounded-xl border shadow-sm cursor-pointer hover:bg-muted/20 transition">
+    <div class="p-4 pb-2">
+        <div class="flex justify-between items-center text-sm text-muted-foreground">
+            <div class="flex gap-2 font-medium">
+                <span>{{ experience.companyName }}</span>
+                <span>•</span>
+                <span>{{ experience.title }}</span>
+            </div>
+            <span class="text-xs">{{ dateLabel }}</span>
+        </div>
+    </div>
+
+    <div class="p-4 pt-0 space-y-1.5">
+        <p class="text-sm text-muted-foreground">
+            {{ experience.position }} • {{ experience.experienceType }}
+        </p>
+        <p class="text-sm line-clamp-3">{{ experience.summary }}</p>
+    </div>
+
+    <div class="px-4 pb-4">
+        <button class="text-primary text-sm p-0">
+            View details →
+        </button>
+    </div>
+</div>

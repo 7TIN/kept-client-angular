@@ -1,30 +1,46 @@
-// src/app/app.routes.ts
 import { Routes } from '@angular/router';
+
+// Import Layouts
 import { AppLayout } from './layouts/app-layout/app-layout';
 import { AuthLayout } from './layouts/auth-layout/auth-layout';
 
-// 1. Import your new Home component
+// Import Pages
 import { Home } from './pages/home/home';
 import { LoginComponent } from './pages/login/login';
 import { SignupComponent } from './pages/signup/signup';
+import { ExperiencesPage } from './pages/experiences/experiences';
+import { CompaniesPage } from './pages/companies/companies';
 
 export const routes: Routes = [
+  // Routes that use the main AppLayout (with Navbar)
   {
     path: '',
     component: AppLayout,
     children: [
-      // 2. Add the route for the home page
-      { path: '', component: Home },
-      // { path: 'companies', component: CompaniesPageComponent },
-      // { path: 'experience', component: ExperiencesPageComponent },
+      { path: '', component: Home, pathMatch: 'full' },
+      { path: 'experience', component: ExperiencesPage },
+      { path: 'companies', component: CompaniesPage }, // <-- Add the new route
     ]
   },
+
+  // Specific route for Login, using the AuthLayout
   {
-    path: '',
+    path: 'login',
     component: AuthLayout,
     children: [
-      { path: 'login', component: LoginComponent },
-      { path: 'signup', component: SignupComponent },
+      { path: '', component: LoginComponent }
     ]
-  }
+  },
+
+  // Specific route for Signup, using the AuthLayout
+  {
+    path: 'signup',
+    component: AuthLayout,
+    children: [
+      { path: '', component: SignupComponent }
+    ]
+  },
+
+  // This wildcard redirect must be the LAST route in the array
+  { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
