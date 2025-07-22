@@ -1,26 +1,20 @@
-
-<div (click)="openDetails()" class="bg-card text-card-foreground rounded-xl border shadow-sm cursor-pointer hover:bg-muted/20 transition">
-    <div class="p-4 pb-2">
-        <div class="flex justify-between items-center text-sm text-muted-foreground">
-            <div class="flex gap-2 font-medium">
-                <span>{{ experience.companyName }}</span>
-                <span>•</span>
-                <span>{{ experience.title }}</span>
-            </div>
-            <span class="text-xs">{{ dateLabel }}</span>
-        </div>
+<div 
+  (click)="viewDetails.emit(experience)" 
+  class="card w-full bg-base-100 rounded-xl shadow-md border border-base-300 p-6 cursor-pointer hover:shadow-lg transition-shadow space-y-2"
+>
+  <div class="flex justify-between items-start">
+    <div>
+      <h2 class="card-title text-lg font-semibold">
+        {{ experience.companyName }} • {{ experience.title }}
+      </h2>
+      <p class="text-sm text-base-content/70">{{ experience.position }} • {{ experience.experienceType }}</p>
     </div>
+    <span class="text-xs text-base-content/50 whitespace-nowrap">{{ dateLabel }}</span>
+  </div>
 
-    <div class="p-4 pt-0 space-y-1.5">
-        <p class="text-sm text-muted-foreground">
-            {{ experience.position }} • {{ experience.experienceType }}
-        </p>
-        <p class="text-sm line-clamp-3">{{ experience.summary }}</p>
-    </div>
+  <p class="text-sm text-base-content pt-1">{{ experience.summary }}</p>
 
-    <div class="px-4 pb-4">
-        <button class="text-primary text-sm p-0">
-            View details →
-        </button>
-    </div>
+  <div class="card-actions justify-start pt-2">
+    <button class="btn btn-link text-primary p-0 min-h-0 h-auto">View details →</button>
+  </div>
 </div>

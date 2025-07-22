@@ -1,113 +1,101 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule } from '@angular/material/icon';
-import { ExperienceService } from '../../services/experience';
-import { CompanyService } from '../../services/company';
 import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { format } from 'date-fns';
+
+// --- Your Services ---
+import { ExperienceService } from '../../services/experience';
+import { CompanyService } from '../../services/company';
 
 @Component({
   selector: 'app-share-experience',
   standalone: true,
-  // This 'imports' array is the key to fixing the errors
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatIconModule
   ],
   templateUrl: './share-experience.html',
 })
 export class ShareExperience implements OnInit {
+  @Output() close = new EventEmitter<void>();
+  @Output() experienceSubmitted = new EventEmitter<void>();
   experienceForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private experienceService: ExperienceService,
-    private companyService: CompanyService,
-    public dialogRef: MatDialogRef<ShareExperience>
+    private companyService: CompanyService
+    // We don't need a DialogRef from a library anymore
   ) {
     this.experienceForm = this.fb.group({
       title: ['', Validators.required],
       companyName: ['', Validators.required],
+      position: ['', Validators.required],
+      experienceType: ['TECHNICAL', Validators.required],
+      interviewDate: ['', Validators.required], // Start empty for date input
       summary: ['', Validators.required],
-      // This is a FormArray to hold a dynamic number of questions
-      questions: this.fb.array([])
+      questions: this.fb.array([], Validators.required),
     });
   }
 
   ngOnInit(): void {
-    this.addQuestion(); // Start with one question field by default
+    this.addQuestion();
   }
 
-  // Getter to easily access the questions FormArray
+  // --- All of your other methods (get questions, addQuestion, removeQuestion) remain exactly the same ---
   get questions(): FormArray {
     return this.experienceForm.get('questions') as FormArray;
   }
 
-  // Method to add a new question group to the FormArray
   addQuestion(): void {
-    const questionForm = this.fb.group({
+    this.questions.push(this.fb.group({
       questionText: ['', Validators.required],
-      questionType: ['TECHNICAL', Validators.required]
-    });
-    this.questions.push(questionForm);
+      questionType: ['TECHNICAL', Validators.required],
+    }));
   }
 
-  // Method to remove a question from the FormArray at a specific index
   removeQuestion(index: number): void {
     this.questions.removeAt(index);
   }
 
-  // Method to handle the form submission
+  // --- The form submission logic is now simpler ---
   onSubmit(): void {
     if (this.experienceForm.invalid) {
       return;
     }
 
     const formValue = this.experienceForm.value;
+    const companyName = formValue.companyName;
 
-    this.companyService.searchCompanies(formValue.companyName).pipe(
-      // switchMap allows us to chain dependent asynchronous operations
+    this.companyService.searchCompanies(companyName).pipe(
       switchMap(companies => {
-        const existingCompany = companies.find(c => c.name.toLowerCase() === formValue.companyName.toLowerCase());
-        // If the company exists, return it. Otherwise, create a new one.
-        if (existingCompany) {
-          return of(existingCompany);
-        }
-        return this.companyService.createCompany(formValue.companyName);
+        const existingCompany = companies.find(c => c.name.toLowerCase() === companyName.toLowerCase());
+        // If the company exists, return it. Otherwise, create it.
+        return existingCompany ? of(existingCompany) : this.companyService.createCompany(companyName);
       }),
       switchMap(company => {
-        // Now that we have the company ID, create the final payload
+        // Create the final payload to send to the backend
         const payload = {
-            title: formValue.title,
-            position: 'SDE-1', // Placeholder - add this to your form
-            experienceType: 'TECHNICAL', // Placeholder - add this to your form
-            interviewDate: new Date().toISOString().split('T')[0], // Placeholder - add this to your form
-            summary: formValue.summary,
-            companyId: company.id,
-            questions: formValue.questions.map((q: any) => ({
-                question: q.questionText,
-                type: q.questionType,
-                section: q.questionType, // Section can be the same as type
-            })),
+          ...formValue,
+          companyId: company.id,
+          companyName: company.name,
+          interviewDate: format(new Date(formValue.interviewDate), 'yyyy-MM-dd'),
+          questions: formValue.questions.map((q: any) => ({
+            question: q.questionText,
+            type: q.questionType,
+            section: q.questionType,
+          })),
         };
-        // Call the service to add the experience
         return this.experienceService.addExperience(payload);
       })
     ).subscribe({
-      next: () => this.dialogRef.close(true), // Close the dialog on success
-      error: (err) => console.error("Failed to submit experience", err)
+      next: (response) => {
+        console.log('Experience submitted successfully!', response);
+        // Here you would close the dialog or navigate away
+      },
+      error: (err) => console.error("Failed to submit experience", err),
     });
   }
 }

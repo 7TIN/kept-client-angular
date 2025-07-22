@@ -1,53 +1,108 @@
-<h2 mat-dialog-title>Share Your Interview Experience</h2>
+<div class="max-w-2xl w-[90vw] p-6 sm:p-8 bg-white rounded-xl">
+  <form [formGroup]="experienceForm" (ngSubmit)="onSubmit()" class="space-y-6 relative max-h-[80vh] overflow-y-auto no-scrollbar">
+    <div class="flex justify-content">
+    <h3 class="font-bold text-xl">Share Your Interview Experience</h3>
+    <button (click)="close.emit()" type="button" class="btn btn-sm btn-circle btn-ghost absolute right-0 top-0">✕</button>
+    </div>
+    
 
-<mat-dialog-content>
-  <form [formGroup]="experienceForm" class="space-y-6">
+    <!-- Title & Company -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <mat-form-field appearance="outline">
-        <mat-label>Title</mat-label>
-        <input matInput formControlName="title" placeholder="e.g. My Amazon SDE-1 Interview">
-      </mat-form-field>
-      
-      <mat-form-field appearance="outline">
-        <mat-label>Company</mat-label>
-        <input matInput formControlName="companyName" placeholder="Search or create company...">
-      </mat-form-field>
+      <label class="form-control w-full ">
+        <div class="label"><span class="label-text ">Title</span></div>
+        <input type="text" formControlName="title" class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded
+         focus:outline-none
+         focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50
+         transition-shadow duration-200 " />
+      </label>
+      <label class="form-control w-full">
+        <div class="label"><span class="label-text">Company</span></div>
+        <input type="text" formControlName="companyName" class=" w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded
+         focus:outline-none
+         focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50
+         transition-all duration-200"/>
+      </label>
     </div>
 
-    <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Summary</mat-label>
-        <textarea matInput formControlName="summary" placeholder="Write a short summary..."></textarea>
-    </mat-form-field>
+    <!-- Position, Experience Type, Interview Date -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <label class="form-control w-full">
+        <div class="label"><span class="label-text">Position</span></div>
+        <input type="text" formControlName="position" class=" w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded
+         focus:outline-none
+         focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50
+         transition-shadow duration-200 " />
+      </label>
+      <label class="form-control w-full">
+        <div class="label"><span class="label-text">Experience Type</span></div>
+        <select formControlName="experienceType" class="select select-bordered w-full">
+          <option value="TECHNICAL">Technical</option>
+          <option value="HR">HR</option>
+          <option value="MR">MR</option>
+        </select>
+      </label>
+      <label class="form-control w-full">
+        <div class="label"><span class="label-text">Interview Date</span></div>
+        <input type="date" formControlName="interviewDate" class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded
+         focus:outline-none
+         focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50
+         transition-shadow duration-200 " />
+      </label>
+    </div>
 
+    <!-- Summary -->
+    <label class="form-control">
+      <div class="label"><span class="label-text">Summary</span></div>
+      <textarea formControlName="summary" class="textarea textarea-bordered h-28 w-full"></textarea>
+    </label>
+
+    <!-- Questions Section -->
     <div class="space-y-4">
       <h3 class="text-lg font-semibold">Questions</h3>
-      <div formArrayName="questions">
-        <div *ngFor="let question of questions.controls; let i=index" [formGroupName]="i" class="grid grid-cols-[1fr_auto_auto] items-center gap-2">
-          <mat-form-field appearance="outline">
-            <mat-label>Question {{ i + 1 }}</mat-label>
-            <input title="input" matInput formControlName="questionText">
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Type</mat-label>
-            <mat-select formControlName="questionType">
-              <mat-option value="TECHNICAL">Technical</mat-option>
-              <mat-option value="HR">HR</mat-option>
-              <mat-option value="MR">MR</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <button mat-icon-button (click)="removeQuestion(i)" color="warn" type="button">
-            <mat-icon>delete</mat-icon>
+      <div formArrayName="questions" class="space-y-3">
+        <div
+          *ngFor="let q of questions.controls; let i = index"
+          [formGroupName]="i"
+          class="grid grid-cols-1 sm:grid-cols-[1fr_auto_auto] gap-2 items-end"
+        >
+          <input
+            type="text"
+            formControlName="questionText"
+            placeholder="e.g. What is OOP?"
+            class="text-xl w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded
+         focus:outline-none
+         focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50
+         transition-shadow duration-200 "
+          />
+          <select title="question" formControlName="questionType" class="select select-bordered w-full sm:w-40">
+            <option value="TECHNICAL">Technical</option>
+            <option value="HR">HR</option>
+            <option value="MR">MR</option>
+          </select>
+          <button
+            type="button"
+            (click)="removeQuestion(i)"
+            class="btn btn-ghost btn-square text-error"
+            title="Remove question"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
           </button>
         </div>
       </div>
-      <button mat-stroked-button type="button" (click)="addQuestion()">+ Add Question</button>
+
+      <!-- Add Question Button -->
+      <button type="button" (click)="addQuestion()" class="btn btn-outline w-full sm:w-auto">
+        + Add Question
+      </button>
+    </div>
+
+    <!-- Submit / Cancel Buttons -->
+    <div class="flex justify-center gap-3 pt-4 ">
+      <button type="button" (click)="close.emit()" class="btn btn-ghost p-3">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="!experienceForm.valid">Submit Experience</button>
     </div>
   </form>
-</mat-dialog-content>
-
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="experienceForm.invalid">Submit</button>
-</mat-dialog-actions>
+</div>
