@@ -1,6 +1,9 @@
-<div class="modal-box w-11/12 max-w-2xl">
+<div class="max-w-2xl max-h-[80vh] overflow-y-auto scrollbar-hidden rounded-xl sm:p-8 bg-white">
   <div *ngIf="experience">
+    <div class=" flex justify-content">
     <h3 class="font-bold text-lg">{{ experience.title }}</h3>
+    <button (click)="close.emit()" type="button" class="btn btn-sm btn-circle btn-ghost absolute right-5 top-4">X</button>
+    </div>
     <p class="py-2 text-sm text-base-content/70">{{ experience.position }} • {{ experience.companyName }}</p>
     <p class="py-4 whitespace-pre-line">{{ experience.summary }}</p>
     <div class="space-y-4 mt-4">
@@ -11,7 +14,5 @@
       </div>
     </div>
   </div>
-  <div class="modal-action">
-    <button (click)="closeModal.emit()" class="btn">Close</button>
-  </div>
+  
 </div>

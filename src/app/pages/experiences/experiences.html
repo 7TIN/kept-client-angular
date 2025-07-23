@@ -39,9 +39,10 @@
     <div class="modal-box w-11/12 max-w-2xl relative">
       <app-experience-details 
         [experience]="selectedExperience" 
-        (closeModal)="closeDetailsModal()">
+        (close)="closeDetailsModal()">
       </app-experience-details>
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" (click)="closeDetailsModal()">✕</button>
     </div>
   </div>
+
+  
 </ng-container>

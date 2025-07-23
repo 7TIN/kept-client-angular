@@ -35,7 +35,10 @@
       </label>
       <label class="form-control w-full">
         <div class="label"><span class="label-text">Experience Type</span></div>
-        <select formControlName="experienceType" class="select select-bordered w-full">
+        <select formControlName="experienceType" class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded
+         focus:outline-none
+         focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50
+         transition-shadow duration-200">
           <option value="TECHNICAL">Technical</option>
           <option value="HR">HR</option>
           <option value="MR">MR</option>
@@ -53,17 +56,20 @@
     <!-- Summary -->
     <label class="form-control">
       <div class="label"><span class="label-text">Summary</span></div>
-      <textarea formControlName="summary" class="textarea textarea-bordered h-28 w-full"></textarea>
+      <textarea formControlName="summary" class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded
+         focus:outline-none
+         focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50
+         transition-shadow duration-200"></textarea>
     </label>
 
     <!-- Questions Section -->
     <div class="space-y-4">
       <h3 class="text-lg font-semibold">Questions</h3>
-      <div formArrayName="questions" class="space-y-3">
+      <div formArrayName="questions" class="max-h-60 overflow-y-auto no-scrollbar space-y-3">
         <div
           *ngFor="let q of questions.controls; let i = index"
           [formGroupName]="i"
-          class="grid grid-cols-1 sm:grid-cols-[1fr_auto_auto] gap-2 items-end"
+          class="grid grid-cols-[1fr_auto_auto] sm:grid-cols-[1fr_160px_32px] items-center gap-2"
         >
           <input
             type="text"
@@ -74,7 +80,10 @@
          focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50
          transition-shadow duration-200 "
           />
-          <select title="question" formControlName="questionType" class="select select-bordered w-full sm:w-40">
+          <select title="question" formControlName="questionType" class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded
+         focus:outline-none
+         focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50
+         transition-shadow duration-200">
             <option value="TECHNICAL">Technical</option>
             <option value="HR">HR</option>
             <option value="MR">MR</option>

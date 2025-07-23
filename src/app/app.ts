@@ -8,7 +8,7 @@ import { AuthLayout } from './layouts/auth-layout/auth-layout'; // <-- Import
   selector: 'app-root',
   standalone: true,
   // Make sure layouts are imported here
-  imports: [RouterOutlet, AppLayout, AuthLayout],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

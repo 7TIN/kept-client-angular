@@ -10,5 +10,5 @@ import { Experience } from '../../components/experience-card/experience-card';
 })
 export class ExperienceDetails {
   @Input() experience: Experience | null = null;
-  @Output() closeModal = new EventEmitter<void>();
+  @Output() close= new EventEmitter<void>();
 }
