@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ExperienceService } from '../../services/experience';
-import { Experience, ExperienceCard } from '../../components/experience-card/experience-card';
+import {
+  Experience,
+  ExperienceCard,
+} from '../../components/experience-card/experience-card';
 import { ShareExperience } from '../../dialogs/share-experience/share-experience';
 import { ExperienceDetails } from '../../dialogs/experience-details/experience-details';
 
@@ -10,18 +13,17 @@ import { ExperienceDetails } from '../../dialogs/experience-details/experience-d
   standalone: true,
   imports: [CommonModule, ExperienceCard, ShareExperience, ExperienceDetails],
   templateUrl: './experiences.html',
-  styleUrl: './experiences.scss'
+  styleUrl: './experiences.scss',
 })
 export class ExperiencesPage implements OnInit {
   experiences: Experience[] = [];
-  isLoading = true;
+  isLoading = false;
+  error: string | null = null;
 
-  // --- Pagination State ---
-  currentPage: number = 0;
-  totalPages: number = 0;
-  pageSize: number = 5; // You can adjust how many items to show per page
+  currentPage = 0;
+  totalPages = 0;
+  pageSize = 5;
 
-  // --- Modal State ---
   showShareDialog = false;
   selectedExperience: Experience | null = null;
 
@@ -31,23 +33,26 @@ export class ExperiencesPage implements OnInit {
     this.fetchExperiences(this.currentPage);
   }
 
-  fetchExperiences(page: number): void {
+  fetchExperiences(page: number, filters: any = {}): void {
     this.isLoading = true;
-    this.experienceService.getRecentExperiences(page, this.pageSize, {}).subscribe({
-      next: (data) => {
-        this.experiences = data.content;
-        this.currentPage = data.number; // The backend returns the current page number
-        this.totalPages = data.totalPages; // The backend returns the total number of pages
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Failed to load experiences:', err);
-        this.isLoading = false;
-      }
-    });
+    this.error = null;
+
+    this.experienceService
+      .getRecentExperiences(page, this.pageSize, filters)
+      .subscribe({
+        next: (data) => {
+          this.experiences = data.content;
+          this.currentPage = data.number;
+          this.totalPages = data.totalPages;
+          this.isLoading = false;
+        },
+        error: (err) => {
+          this.error = err.message;
+          this.isLoading = false;
+        },
+      });
   }
 
-  // --- Pagination Controls ---
   goToNextPage(): void {
     if (this.currentPage < this.totalPages - 1) {
       this.fetchExperiences(this.currentPage + 1);
@@ -60,14 +65,13 @@ export class ExperiencesPage implements OnInit {
     }
   }
 
-  // --- Modal Control Methods (no changes here) ---
   openShareDialog(shouldOpen: boolean): void {
     this.showShareDialog = shouldOpen;
   }
 
   onExperienceSubmitted(): void {
     this.showShareDialog = false;
-    this.fetchExperiences(0); // Go back to the first page after submitting
+    this.fetchExperiences(0);
   }
 
   viewExperienceDetails(experience: Experience): void {

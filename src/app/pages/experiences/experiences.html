@@ -18,6 +18,27 @@
       [experience]="exp"
       (viewDetails)="viewExperienceDetails($event)">
     </app-experience-card>
+
+    <!-- ✅ Correct place for Pagination Controls -->
+    <div *ngIf="totalPages > 1 && !isLoading" class="flex justify-center items-center gap-4 pt-6">
+      <button 
+        class="btn btn-outline"
+        [disabled]="currentPage === 0"
+        (click)="goToPreviousPage()">
+        Previous
+      </button>
+
+      <span class="font-medium">
+        Page {{ currentPage + 1 }} of {{ totalPages }}
+      </span>
+
+      <button 
+        class="btn btn-outline"
+        [disabled]="currentPage >= totalPages - 1"
+        (click)="goToNextPage()">
+        Next
+      </button>
+    </div>
   </section>
 </div>
 
@@ -29,7 +50,6 @@
         (close)="openShareDialog(false)"
         (experienceSubmitted)="onExperienceSubmitted()">
       </app-share-experience>
-      <!-- <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" (click)="openShareDialog(false)">✕</button> -->
     </div>
   </div>
 </ng-container>
@@ -43,6 +63,4 @@
       </app-experience-details>
     </div>
   </div>
-
-  
 </ng-container>
