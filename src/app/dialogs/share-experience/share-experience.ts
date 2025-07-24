@@ -1,101 +1,111 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { format } from 'date-fns';
-
-// --- Your Services ---
+import {
+  FormBuilder,
+  FormGroup,
+  FormArray,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ExperienceService } from '../../services/experience';
-import { CompanyService } from '../../services/company';
+import { ApiService } from '../../services/api';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-share-experience',
-  standalone: true,
+  templateUrl: './share-experience.html',
   imports: [
     CommonModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
-  templateUrl: './share-experience.html',
 })
-export class ShareExperience implements OnInit {
+export class ShareExperienceDialog implements OnInit {
   @Output() close = new EventEmitter<void>();
-  @Output() experienceSubmitted = new EventEmitter<void>();
-  experienceForm: FormGroup;
+  @Output() submitted = new EventEmitter<void>();
+
+  experienceForm!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    private experienceService: ExperienceService,
-    private companyService: CompanyService
-    // We don't need a DialogRef from a library anymore
-  ) {
+    private api: ApiService,
+    private experienceService: ExperienceService
+  ) {}
+
+  ngOnInit(): void {
     this.experienceForm = this.fb.group({
       title: ['', Validators.required],
       companyName: ['', Validators.required],
       position: ['', Validators.required],
       experienceType: ['TECHNICAL', Validators.required],
-      interviewDate: ['', Validators.required], // Start empty for date input
+      interviewDate: ['', Validators.required],
       summary: ['', Validators.required],
-      questions: this.fb.array([], Validators.required),
+      questions: this.fb.array([
+        this.fb.group({
+          questionText: ['', Validators.required],
+          questionType: ['TECHNICAL', Validators.required],
+        }),
+      ]),
     });
   }
 
-  ngOnInit(): void {
-    this.addQuestion();
-  }
-
-  // --- All of your other methods (get questions, addQuestion, removeQuestion) remain exactly the same ---
   get questions(): FormArray {
     return this.experienceForm.get('questions') as FormArray;
   }
 
   addQuestion(): void {
-    this.questions.push(this.fb.group({
-      questionText: ['', Validators.required],
-      questionType: ['TECHNICAL', Validators.required],
-    }));
+    this.questions.push(
+      this.fb.group({
+        questionText: ['', Validators.required],
+        questionType: ['TECHNICAL', Validators.required],
+      })
+    );
   }
 
   removeQuestion(index: number): void {
     this.questions.removeAt(index);
   }
 
-  // --- The form submission logic is now simpler ---
-  onSubmit(): void {
-    if (this.experienceForm.invalid) {
-      return;
+  async onSubmit(): Promise<void> {
+    if (this.experienceForm.invalid) return;
+
+    const values = this.experienceForm.value;
+    const normalized = values.companyName.trim().toLowerCase();
+
+    try {
+      const searchRes = await this.api
+        .get('/companies', { params: { q: values.companyName.trim() } })
+        .toPromise();
+
+      let company = (searchRes as any[]).find(
+        (c) => c.name.toLowerCase() === normalized
+      );
+
+      if (!company) {
+        const createRes = await this.api
+          .post('/companies', { name: values.companyName })
+          .toPromise();
+        company = createRes;
+      }
+
+      const payload = {
+        title: values.title,
+        position: values.position,
+        experienceType: values.experienceType,
+        summary: values.summary,
+        interviewDate: values.interviewDate, // Already in yyyy-MM-dd format
+        companyId: company.id,
+        questions: values.questions.map((q: any) => ({
+          question: q.questionText,
+          type: q.questionType,
+          section: q.questionType,
+        })),
+      };
+
+      await this.experienceService.addExperience(payload).toPromise();
+
+      this.submitted.emit();
+      this.close.emit();
+    } catch (err) {
+      console.error('Failed to submit experience:', err);
     }
-
-    const formValue = this.experienceForm.value;
-    const companyName = formValue.companyName;
-
-    this.companyService.searchCompanies(companyName).pipe(
-      switchMap(companies => {
-        const existingCompany = companies.find(c => c.name.toLowerCase() === companyName.toLowerCase());
-        // If the company exists, return it. Otherwise, create it.
-        return existingCompany ? of(existingCompany) : this.companyService.createCompany(companyName);
-      }),
-      switchMap(company => {
-        // Create the final payload to send to the backend
-        const payload = {
-          ...formValue,
-          companyId: company.id,
-          companyName: company.name,
-          interviewDate: format(new Date(formValue.interviewDate), 'yyyy-MM-dd'),
-          questions: formValue.questions.map((q: any) => ({
-            question: q.questionText,
-            type: q.questionType,
-            section: q.questionType,
-          })),
-        };
-        return this.experienceService.addExperience(payload);
-      })
-    ).subscribe({
-      next: (response) => {
-        console.log('Experience submitted successfully!', response);
-        // Here you would close the dialog or navigate away
-      },
-      error: (err) => console.error("Failed to submit experience", err),
-    });
   }
 }

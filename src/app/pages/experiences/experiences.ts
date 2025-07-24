@@ -5,7 +5,7 @@ import {
   Experience,
   ExperienceCard,
 } from '../../components/experience-card/experience-card';
-import { ShareExperience } from '../../dialogs/share-experience/share-experience';
+import { ShareExperienceDialog } from '../../dialogs/share-experience/share-experience';
 import { ExperienceDetails } from '../../dialogs/experience-details/experience-details';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-experiences',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, ExperienceCard, ShareExperience, ExperienceDetails],
+  imports: [CommonModule, FormsModule, RouterModule, ExperienceCard, ShareExperienceDialog, ExperienceDetails],
   templateUrl: './experiences.html',
   styleUrl: './experiences.scss',
 })
