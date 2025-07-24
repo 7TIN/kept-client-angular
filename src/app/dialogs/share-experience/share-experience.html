@@ -19,28 +19,20 @@
     <!-- Title & Company -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <label class="form-control w-full">
-        <div class="label"><span class="label-text ">Title</span></div>
+        <div class="label"><span class="label-text">Title</span></div>
         <input
           type="text"
           formControlName="title"
-          class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded
-         focus:outline-none
-         focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50
-         transition-shadow duration-200 "
+          class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50 transition-shadow duration-200"
           placeholder="e.g. My Amazon SDE-1 Interview"
         />
       </label>
       <label class="form-control w-full">
         <div class="label"><span class="label-text">Company</span></div>
-        <input
-          type="text"
-          formControlName="companyName"
-          class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded
-         focus:outline-none
-         focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50
-         transition-shadow duration-200 "
-          placeholder="e.g. Amazon"
-        />
+        <app-company-combobox
+          [value]="experienceForm.get('companyName')?.value"
+          (valueChange)="experienceForm.get('companyName')?.setValue($event)"
+        ></app-company-combobox>
       </label>
     </div>
 
@@ -51,10 +43,7 @@
         <input
           type="text"
           formControlName="position"
-          class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded
-         focus:outline-none
-         focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50
-         transition-shadow duration-200 "
+          class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50 transition-shadow duration-200"
           placeholder="e.g. SDE-1"
         />
       </label>
@@ -62,10 +51,7 @@
         <div class="label"><span class="label-text">Experience Type</span></div>
         <select
           formControlName="experienceType"
-          class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded
-         focus:outline-none
-         focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50
-         transition-shadow duration-200 "
+          class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50 transition-shadow duration-200"
         >
           <option value="TECHNICAL">Technical</option>
           <option value="HR">HR</option>
@@ -77,10 +63,7 @@
         <input
           type="date"
           formControlName="interviewDate"
-          class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded
-         focus:outline-none
-         focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50
-         transition-shadow duration-200 "
+          class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50 transition-shadow duration-200"
         />
       </label>
     </div>
@@ -90,10 +73,7 @@
       <div class="label"><span class="label-text">Summary</span></div>
       <textarea
         formControlName="summary"
-        class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded
-         focus:outline-none
-         focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50
-         transition-shadow duration-200 "
+        class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50 transition-shadow duration-200"
         rows="4"
         placeholder="Write a short summary of your experience..."
       ></textarea>
@@ -115,18 +95,12 @@
             type="text"
             formControlName="questionText"
             placeholder="e.g. What is OOP?"
-            class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded
-         focus:outline-none
-         focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50
-         transition-shadow duration-200 "
+            class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50 transition-shadow duration-200"
           />
           <select
             title="questionType"
             formControlName="questionType"
-            class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 pr-3 border rounded
-         focus:outline-none
-         focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50
-         transition-shadow duration-200 "
+            class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 pr-3 border rounded focus:outline-none focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50 transition-shadow duration-200"
           >
             <option value="TECHNICAL">Technical</option>
             <option value="HR">HR</option>

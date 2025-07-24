@@ -18,7 +18,7 @@ export class CompanyComboboxComponent implements OnInit {
   queryControl = new FormControl('');
   loading = false;
   results: { id: number; name: string }[] = [];
-  isDropdownOpen = false; // ✅ New flag
+  isDropdownOpen = false;
   private querySubject = new Subject<string>();
 
   constructor(private experienceService: ExperienceService) {}
@@ -29,7 +29,7 @@ export class CompanyComboboxComponent implements OnInit {
     this.queryControl.valueChanges.pipe(
       tap(v => {
         this.querySubject.next(v ?? '');
-        this.isDropdownOpen = true; // ✅ Open dropdown on typing
+        this.isDropdownOpen = true;
       })
     ).subscribe();
 
@@ -46,7 +46,7 @@ export class CompanyComboboxComponent implements OnInit {
   selectCompany(name: string) {
     this.valueChange.emit(name);
     this.queryControl.setValue(name);
-    this.isDropdownOpen = false; // ✅ Close dropdown
+    this.isDropdownOpen = false;
   }
 
   isExactMatch(): boolean {
@@ -59,7 +59,7 @@ export class CompanyComboboxComponent implements OnInit {
     if (value) {
       this.valueChange.emit(value);
       this.queryControl.setValue(value);
-      this.isDropdownOpen = false; // ✅ Close on create
+      this.isDropdownOpen = false; 
     }
   }
 }

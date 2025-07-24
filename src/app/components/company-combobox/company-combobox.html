@@ -2,12 +2,12 @@
   <input
   [formControl]="queryControl"
   placeholder="Search or create company"
-  class="input input-bordered w-full"
+  class="w-full border-gray-600 bg-slate-50 mt-1 mb-1 p-2 pr-3 border rounded focus:outline-none focus:ring-2 focus:ring-zinc-800 focus:ring-opacity-50 transition-shadow duration-200"
 />
 
 <div
   *ngIf="isDropdownOpen && (results.length > 0 || !isExactMatch())"
-  class="dropdown border rounded shadow bg-white mt-1 absolute z-10 w-full max-h-60 overflow-y-auto"
+  class="dropdown border rounded shadow bg-white mt-1 absolute z-10 w-full max-h-60 overflow-y-auto no-scrollbar"
 >
   <div
     *ngFor="let company of results"
@@ -21,7 +21,7 @@
   <div
     *ngIf="!isExactMatch() && queryControl.value"
     (click)="createCompany()"
-    class="px-4 py-2 hover:bg-gray-100 cursor-pointer font-semibold text-blue-600"
+    class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-zinc-600"
   >
     + Create "{{ queryControl.value }}"
   </div>

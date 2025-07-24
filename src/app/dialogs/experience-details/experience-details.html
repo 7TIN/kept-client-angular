@@ -1,4 +1,4 @@
-<div class="max-w-2xl max-h-[80vh] overflow-y-auto scrollbar-hidden rounded-xl sm:p-8 bg-white">
+<div class="max-w-2xl max-h-[80vh] overflow-y-auto scrollbar-hidden rounded-xl sm:p-8 bg-white no-scrollbar">
   <div *ngIf="experience">
     <div class=" flex justify-content">
     <h3 class="font-bold text-lg">{{ experience.title }}</h3>
@@ -8,10 +8,13 @@
     <p class="py-4 whitespace-pre-line">{{ experience.summary }}</p>
     <div class="space-y-4 mt-4">
       <h4 class="font-semibold text-base">Interview Questions</h4>
-      <div *ngFor="let q of experience.questions" class="rounded-xl border border-base-300 p-4 text-sm bg-base-200 space-y-2">
-        <p class="font-medium">{{ q.question }}</p>
-        <span class="text-xs text-base-content/60 italic">{{ q.type }}</span>
-      </div>
+      <div *ngFor="let q of experience.questions" class="rounded-xl border p-4 text-sm bg-gray-100 space-y-2">
+  <div class="flex flex-col">
+    <p class="font-medium text-base">{{ q.question }}</p>
+    <span class="text-xs text-muted italic">{{ q.type }}</span>
+  </div>
+  <app-generate-answer-button [question]="q.question" />
+</div>
     </div>
   </div>
   
