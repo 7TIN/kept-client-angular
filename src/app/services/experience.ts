@@ -1,38 +1,60 @@
-// src/app/services/experience.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { ApiService } from './api';
+import { Observable } from 'rxjs';
+
+// --- Interfaces remain the same ---
+export interface Experience {
+  id: number;
+  title: string;
+  position: string;
+  experienceType: string;
+  summary: string;
+  interviewDate: string;
+  companyName: string;
+  questions: {
+    id: string;
+    question: string;
+    type: string;
+    section: string;
+  }[];
+
+}
+
+export interface PageData {
+  content: Experience[];
+  number: number;
+  totalPages: number;
+}
+
+export interface Filters {
+  q?: string;
+  position?: string;
+  type?: string;
+  company?: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExperienceService {
-  private baseUrl = 'http://localhost:8080/api/experiences';
+  constructor(private api: ApiService) {}
 
-  constructor(private http: HttpClient) { }
+  // The service now simply returns an Observable of the PageData
+  getExperiences(page = 0, size = 5, filters?: Filters): Observable<PageData> {
+    const params: Record<string, any> = {
+      page: page.toString(),
+      size: size.toString(),
+    };
 
-  // Gets the paginated list of experiences
-  getRecentExperiences(page: number, size: number, filters: any): Observable<any> {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
+    if (filters?.q) params['q'] = filters.q;
+    if (filters?.position) params['position'] = filters.position;
+    if (filters?.type) params['type'] = filters.type;
+    if (filters?.company) params['company'] = filters.company;
 
-    if (filters.q) params = params.set('q', filters.q);
-    if (filters.position) params = params.set('position', filters.position);
-    if (filters.type) params = params.set('type', filters.type);
-    if (filters.company) params = params.set('company', filters.company);
-
-    return this.http.get<any>(`${this.baseUrl}/recent`, { params }).pipe(
-      catchError(error => {
-        console.error('Failed to fetch experiences:', error);
-        return throwError(() => new Error('failed to load the experiences'));
-      })
-    );
+    return this.api.get<PageData>('/experiences/recent', { params });
   }
 
-  // Adds a new experience
   addExperience(experienceData: any): Observable<any> {
-    return this.http.post(this.baseUrl, experienceData);
+    return this.api.post("/experiences", experienceData);
   }
 }

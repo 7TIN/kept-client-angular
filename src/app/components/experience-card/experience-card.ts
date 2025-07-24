@@ -3,14 +3,19 @@ import { CommonModule } from '@angular/common';
 import { format } from 'date-fns';
 
 export interface Experience {
-  id: number;
+  id: number; // <- change this from number to string
   title: string;
   position: string;
-  companyName: string;
   experienceType: string;
-  interviewDate: string;
   summary: string;
-  questions: any[];
+  interviewDate: string;
+  companyName: string;
+  questions: {
+    id: string;
+    question: string;
+    type: string;
+    section: string;
+  }[];
 }
 
 @Component({
