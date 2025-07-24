@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { format } from 'date-fns';
 
+
 export interface Experience {
   id: number; // <- change this from number to string
   title: string;
@@ -21,7 +22,7 @@ export interface Experience {
 @Component({
   selector: 'app-experience-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ],
   templateUrl: './experience-card.html',
 })
 export class ExperienceCard {

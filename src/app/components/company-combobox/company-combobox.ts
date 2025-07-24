@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-company-combobox',
+  standalone: true,
   templateUrl: './company-combobox.html',
   styleUrls: ['./company-combobox.scss'],
   imports: [ReactiveFormsModule,CommonModule]

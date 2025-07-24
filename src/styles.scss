@@ -1,18 +1,43 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
+/* Apply glow to whole page */
 html, body {
+  // @apply bg-teal-glow;
   height: 100%;
-}
-body {
+  min-height: 100%;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: #f9f9f9; 
 }
 
+/* ❌ Remove this line: it's overriding your glow background */
+body {
+  /* background-color: #f9f9f9; */ /* <- REMOVE THIS LINE */
+}
+
+/* Teal Glow Background */
+.bg-teal-glow {
+  background-color: white;
+  background-image: radial-gradient(125% 125% at 50% 90%, #ffffff 40%, #14b8a6 100%);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* Optional: Grid Orb Background */
+.bg-grid-orb {
+  background-color: white;
+  background-image:
+    linear-gradient(to right, rgba(71, 85, 105, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(71, 85, 105, 0.15) 1px, transparent 1px),
+    radial-gradient(circle at 50% 60%, rgba(236, 72, 153, 0.15) 0%, rgba(168, 85, 247, 0.05) 40%, transparent 70%);
+  background-size: 40px 40px, 40px 40px, 100% 100%;
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* Utility for hiding scrollbars */
 .no-scrollbar {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
@@ -21,14 +46,13 @@ body {
   display: none; /* Chrome, Safari */
 }
 
-
+/* Loading shimmer effect */
 .shimmer {
   animation: shimmer 1.2s infinite;
   background: linear-gradient(to right, #f3f3f3 8%, #e0e0e0 18%, #f3f3f3 33%);
   background-size: 1000px 100%;
   border-radius: 4px;
 }
-
 @keyframes shimmer {
   0% {
     background-position: -1000px 0;
