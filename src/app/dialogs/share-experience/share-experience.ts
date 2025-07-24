@@ -9,13 +9,15 @@ import {
 import { ExperienceService } from '../../services/experience';
 import { ApiService } from '../../services/api';
 import { CommonModule } from '@angular/common';
+import { CompanyComboboxComponent } from '../../components/company-combobox/company-combobox';
 
 @Component({
   selector: 'app-share-experience',
   templateUrl: './share-experience.html',
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CompanyComboboxComponent
   ],
 })
 export class ShareExperienceDialog implements OnInit {

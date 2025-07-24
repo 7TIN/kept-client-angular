@@ -57,4 +57,10 @@ export class ExperienceService {
   addExperience(experienceData: any): Observable<any> {
     return this.api.post("/experiences", experienceData);
   }
+
+  searchCompanies(query: string): Observable<{ id: number; name: string }[]> {
+  return this.api.get<{ id: number; name: string }[]>('/companies', {
+    params: { q: query }
+  });
+}
 }

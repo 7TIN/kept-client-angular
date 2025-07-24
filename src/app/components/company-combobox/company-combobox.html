@@ -1,0 +1,30 @@
+<div class="relative">
+  <input
+  [formControl]="queryControl"
+  placeholder="Search or create company"
+  class="input input-bordered w-full"
+/>
+
+<div
+  *ngIf="isDropdownOpen && (results.length > 0 || !isExactMatch())"
+  class="dropdown border rounded shadow bg-white mt-1 absolute z-10 w-full max-h-60 overflow-y-auto"
+>
+  <div
+    *ngFor="let company of results"
+    (click)="selectCompany(company.name)"
+    class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+  >
+    {{ company.name }}
+  </div>
+
+  <!-- Only show create option if no exact match -->
+  <div
+    *ngIf="!isExactMatch() && queryControl.value"
+    (click)="createCompany()"
+    class="px-4 py-2 hover:bg-gray-100 cursor-pointer font-semibold text-blue-600"
+  >
+    + Create "{{ queryControl.value }}"
+  </div>
+</div>
+
+</div>
