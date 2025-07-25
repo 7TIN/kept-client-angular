@@ -1,0 +1,85 @@
+<div class="md:hidden relative z-50">
+  <!-- Toggle Button -->
+  <button
+    class="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700"
+    aria-label="Toggle mobile nav"
+    (click)="toggleNav()"
+  >
+    <ng-container *ngIf="isOpen; else menuIcon">
+      <!-- X Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </ng-container>
+    <ng-template #menuIcon>
+      <!-- Menu Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </ng-template>
+  </button>
+
+  <!-- Drawer -->
+  <div
+  *ngIf="isOpen"
+  class="fixed top-16 left-0 z-50 w-72 h-[calc(100vh-4rem)] bg-black/80 text-white shadow-xl backdrop-blur-md rounded-r-xl p-6 flex flex-col gap-4"
+>
+    <a
+      routerLink="/"
+      (click)="closeNav()"
+      [ngClass]="{
+        'bg-white/30 text-white': isActive('/'),
+        'text-white/80 hover:bg-white/20 hover:text-white': !isActive('/')
+      }"
+      class="flex items-center gap-4 rounded-lg p-3 text-lg font-semibold transition-colors"
+    >
+      <!-- Home Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 12l2-2m0 0l7-7 7 7m-9 2v10m4-10v10m5-10l2 2M4 10l2 2" />
+      </svg>
+      <span>Home</span>
+    </a>
+
+    <a
+      routerLink="/companies"
+      (click)="closeNav()"
+      [ngClass]="{
+        'bg-white/30 text-white': isActive('/companies'),
+        'text-white/80 hover:bg-white/20 hover:text-white': !isActive('/companies')
+      }"
+      class="flex items-center gap-4 rounded-lg p-3 text-lg font-semibold transition-colors"
+    >
+      <!-- Building Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M4 21h16M4 10h16M10 3h4a1 1 0 011 1v4H9V4a1 1 0 011-1z" />
+      </svg>
+      <span>Companies</span>
+    </a>
+
+    <a
+      routerLink="/experience"
+      (click)="closeNav()"
+      [ngClass]="{
+        'bg-white/30 text-white': isActive('/experience'),
+        'text-white/80 hover:bg-white/20 hover:text-white': !isActive('/experience')
+      }"
+      class="flex items-center gap-4 rounded-lg p-3 text-lg font-semibold transition-colors"
+    >
+      <!-- Book Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 6v12m-6-6h12" />
+      </svg>
+      <span>Experiences</span>
+    </a>
+  </div>
+</div>
