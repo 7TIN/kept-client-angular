@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import axios from 'axios';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-signup',
@@ -12,6 +13,10 @@ import axios from 'axios';
   styleUrl: './signup.scss'
 })
 export class SignupComponent {
+
+  private baseUrl = environment.AUTH_BASE_URL;
+  
+  
   signupForm: FormGroup;
   showPassword = false;
   errorMsg: string | null = null;
@@ -49,7 +54,7 @@ export class SignupComponent {
     try {
       const formValue = this.signupForm.value;
       // NOTE: Should be moved to an AuthService
-      await axios.post('http://localhost:8080/auth/register', {
+      await axios.post(`${this.baseUrl}/register`, {
         name: formValue.name,
         username: formValue.username,
         email: formValue.email,
