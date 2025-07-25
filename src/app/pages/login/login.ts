@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import axios from 'axios';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +14,10 @@ import axios from 'axios';
   styleUrl: './login.scss'
 })
 export class LoginComponent {
+
+  private baseUrl = environment.AUTH_BASE_URL;
+  
+
   loginForm: FormGroup;
   showPassword = false;
   errorMsg: string | null = null;
@@ -31,16 +36,14 @@ export class LoginComponent {
     }
 
     try {
-      // NOTE: This logic should be moved to an AuthService
       const res = await axios.post(
-        `http://localhost:8080/auth/login`, // Use your actual backend URL
+        `http://localhost:8080/auth/login`, 
         this.loginForm.value
       );
 
       const { token } = res.data;
       localStorage.setItem('token', token);
       
-      // Ideally, you'd navigate to a dashboard, but let's go home for now
       this.router.navigate(['/']); 
 
     } catch (err: any) {
